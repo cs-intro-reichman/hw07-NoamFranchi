@@ -1,29 +1,46 @@
 /** Computes the binomial(n,k) function. */
 public class Binomial {	
     public static void main(String[] args) {
-		//// Uncomment the version of binomial that you want to test
- 
 		// Testing the basic binomial implementation:
-    	// System.out.println(binomial1(Integer.parseInt(args[0]), Integer.parseInt(args[1])));
+    	System.out.println(binomial1(Integer.parseInt(args[0]), Integer.parseInt(args[1])));
 
 		// Testing the optimized binomial implementation:
-		// System.out.println(binomial(Integer.parseInt(args[0]), Integer.parseInt(args[1])));
+		System.out.println(binomial(Integer.parseInt(args[0]), Integer.parseInt(args[1])));
 	}
 
 	// Computes the Binomial function, basic version.
 	public static int binomial1(int n, int k) { 
-		//// Repplace the following comment with your code
-		return 0;
-	 }
-	
+		if (k > n) return 0;
+    	if (k == 0 || n == 0) return 1;
+    	return binomial1(n - 1, k) + binomial1(n - 1, k - 1);
+	}
+
 	// Computes the Binomial function, efficiently
 	public static int binomial(int n, int k) {
 		//// This function creates a 2D array, say memo, 
 		//// and then initializes all its elements to -1.
 		//// It then calls binomial(n, k, memo), which does all the heavy lifiting.
-		//// Replace the following statement with your code.
-		return 0;
+		int[][] memo = new int[n + 1][k + 1];
+		fillMemo(memo, memo.length);
+		return binomial(n, k, memo);
 	}
+	
+	private static void fillMemo (int[][] memo, int numRows){
+		if(numRows == 0){
+			return;
+		}
+		fillRow(memo[numRows - 1], memo[0].length);
+		fillMemo(memo, numRows - 1);
+	}
+
+	private static void fillRow (int[] row, int index){
+		if(index == 0){
+			return;
+		}
+		row[index - 1] = -1;
+		fillRow(row, index - 1);
+	}
+
 
 	private static int binomial(int n, int k, int[][] memo) {
 		if (memo[n][k] != -1) {
